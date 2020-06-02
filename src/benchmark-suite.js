@@ -145,7 +145,7 @@ export class Suite {
 
       if (test.error) {
         this._logger.fail(test.error);
-        break;
+        return;
       }
 
       this._logger.success(printTime(test.timeEnd));
