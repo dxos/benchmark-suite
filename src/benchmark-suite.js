@@ -11,6 +11,8 @@ const noop = () => {};
 
 const printTime = hr => `~${prettyHrtime(hr)} (${hr[0]} s + ${hr[1]} ns)`;
 
+const toNanoseconds = hr => (hr[0] * 1e9) + hr[1];
+
 export class BenchmarkTest {
   constructor (title, test) {
     assert(title, 'title is required');
@@ -118,7 +120,7 @@ export class Suite {
       try {
         const timeEnd = await test.run();
 
-        if (winner === null || winner.timeEnd[1] > timeEnd[1]) {
+        if (winner === null || toNanoseconds(winner.timeEnd) > toNanoseconds(timeEnd)) {
           winner = test;
         }
 
