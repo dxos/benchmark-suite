@@ -44,10 +44,16 @@ export class BenchmarkTest {
   async run () {
     const release = await this._lock();
     this._timeStart = hrtime();
-    await this._test({ timeStart: this._timeStart, hrtime, prettyHrtime });
-    this._timeEnd = hrtime(this._timeStart);
-    release();
-    return this._timeEnd;
+
+    try {
+      await this._test({ timeStart: this._timeStart, hrtime, prettyHrtime });
+      this._timeEnd = hrtime(this._timeStart);
+      release();
+      return this._timeEnd;
+    } catch (err) {
+      release();
+      throw err;
+    }
   }
 }
 
